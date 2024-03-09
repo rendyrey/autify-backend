@@ -1,0 +1,7 @@
+services:
+  fetcher:
+    build: .
+    image: 'rendy_web_fetcher'
+    container_name: "rendy_web_fetcher_container"
+    volumes:
+      - .:/app
