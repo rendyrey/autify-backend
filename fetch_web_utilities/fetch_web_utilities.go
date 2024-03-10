@@ -40,6 +40,7 @@ func (w WebUrl) New(u string) WebUrl {
 
 func (w WebUrl) FetchWebPage() ([]byte, error) {
 	// fetch the web page
+	fmt.Println("Fetch Web response...")
 	resp, err := http.Get(w.Url)
 	if err != nil {
 		errMsg := fmt.Sprintf("Error fetching the web page: %v", err)
@@ -48,6 +49,7 @@ func (w WebUrl) FetchWebPage() ([]byte, error) {
 	defer resp.Body.Close()
 
 	// read the response
+	fmt.Println("Read response...")
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		errMsg := fmt.Sprintf("Error reading response body: %v", err)
@@ -55,6 +57,7 @@ func (w WebUrl) FetchWebPage() ([]byte, error) {
 	}
 
 	// save webpage to disk
+	fmt.Println("Write web to disk...")
 	err = os.WriteFile(w.PageFilename, body, 0644)
 	if err != nil {
 		errMsg := fmt.Sprintf("Error saving webpage as html to disk: %v", err)
