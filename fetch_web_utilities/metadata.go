@@ -39,4 +39,5 @@ func (metadata Metadata) Display() {
 	fmt.Println("num_links:", metadata.NumLinks)
 	fmt.Println("images", metadata.Images)
 	fmt.Println("last_fetch", metadata.LastFetch)
+	fmt.Printf("\n")
 }

@@ -15,6 +15,8 @@ import (
 	"golang.org/x/net/html"
 )
 
+// it's supposed to be constant, but since go not support slice as constant
+// please don't mutate this
 var AnticipatedAssetTag = []string{"img", "link", "script", "source"}
 var AnticipatedAssetProp = []string{"src", "href"}
 
@@ -40,7 +42,6 @@ func (w WebUrl) New(u string) WebUrl {
 
 func (w WebUrl) FetchWebPage() ([]byte, error) {
 	// fetch the web page
-	fmt.Println("Fetch Web response...")
 	resp, err := http.Get(w.Url)
 	if err != nil {
 		errMsg := fmt.Sprintf("Error fetching the web page: %v", err)
@@ -49,7 +50,6 @@ func (w WebUrl) FetchWebPage() ([]byte, error) {
 	defer resp.Body.Close()
 
 	// read the response
-	fmt.Println("Read response...")
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		errMsg := fmt.Sprintf("Error reading response body: %v", err)
@@ -57,8 +57,7 @@ func (w WebUrl) FetchWebPage() ([]byte, error) {
 	}
 
 	// save webpage to disk
-	fmt.Println("Write web to disk...")
-	err = os.WriteFile(w.PageFilename, body, 0644)
+	err = os.WriteFile(w.PageFilename, body, 0755)
 	if err != nil {
 		errMsg := fmt.Sprintf("Error saving webpage as html to disk: %v", err)
 		return nil, errors.New(errMsg)
@@ -114,9 +113,7 @@ func (w WebUrl) FetchWebAssets() (Metadata, error) {
 
 			if token.Data == "a" {
 				numLinks += 1
-			}
-
-			if token.Data == "img" {
+			} else if token.Data == "img" {
 				images += 1
 			}
 		}

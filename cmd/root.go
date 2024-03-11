@@ -40,7 +40,7 @@ func fetchTheWeb(cmd *cobra.Command, args []string) {
 		var website fwu.WebUrl
 		siteUrl := website.New(url_)
 
-		fmt.Println(siteUrl.Url)
+		fmt.Println("Fetching", siteUrl.Url, "...")
 
 		_, err := siteUrl.FetchWebPage()
 
@@ -50,7 +50,6 @@ func fetchTheWeb(cmd *cobra.Command, args []string) {
 		}
 
 		// parse HTML to extract asset URLs and download them
-		fmt.Println("Download Web Assets...")
 		metadata, err := siteUrl.FetchWebAssets()
 		if err != nil {
 			fmt.Println("Error parsing HTML:", err)
@@ -58,13 +57,11 @@ func fetchTheWeb(cmd *cobra.Command, args []string) {
 		}
 
 		// Replace asset URLs in HTML file with local paths
-		fmt.Println("Replace assets URL in HTML file...")
 		err = siteUrl.ReplaceAssetURLsInHTML()
 		if err != nil {
 			fmt.Println("Error replacing asset URLs:", err)
 			return
 		}
-		fmt.Println("HTML file updated with local asset paths")
 
 		if metadataDisplayOnlyFlag {
 			metadata.Display()
